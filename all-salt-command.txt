@@ -1,33 +1,32 @@
-Command related to salt 
+Command related to salt
 
 Usage: salt [options] '<target>' <function> [arguments]
 
-
-
 *******************************************************************************
-https://repo.saltstack.com/#rhel <to find the method to install the latest salt on all the server family > 
-salt for master and salt-call for minion 
-To install salt on centos 
+https://repo.saltstack.com/#rhel <to find the method to install the latest salt on all the server family >
+salt for master and salt-call for minion
+To install salt on centos
 
-step 1 - sudo yum install https://repo.saltstack.com/yum/redhat/salt-repo-latest-2.el7.noarch.rpm 
+step a - sudo yum install https://repo.saltstack.com/yum/redhat/salt-repo-latest-2.el7.noarch.rpm
 
-step 2 - sudo yum clean expire-cache
+step b - sudo yum clean expire-cache
 
-step 3 - sudo yum install salt-master or sudo yum install salt-minion
+step c - sudo yum install salt-master or sudo yum install salt-minion
 
-step 4 - edit sudo vim /etc/salt/minion 
+step d - edit sudo vim /etc/salt/minion
 
 line -> master <point the ip or hostname of the master server>
 id <name the id of the minion to differentiate between the minion >
 
 step 5 - firewall-cmd --get-active-zones
+
 It will say either public, dmz, or something else. You should only apply to the zones required.
 
 sudo firewall-cmd --permanent --zone=public --add-port=4505-4506/tcp ; firewall-cmd --reload   (to open port 4505 and 4506)
 
 step 6 - add keys of minion to master (once you specify the ip or hostanme of the master in /etc/salt/minion file )
 
-(to see all minion keys accepeted/unaccepted on master run) sudo salt-key  
+(to see all minion keys accepeted/unaccepted on master run) sudo salt-key
 (for specfic minion) sudo salt-key -f <minion id>
 (for accpting the minion keys on master ) sudo salt-key -a <minion id>
 
@@ -38,22 +37,22 @@ salt '*' test.ping  or salt 'minionid' test.ping (test is a module which have ot
 salt '*' sys.list_functions sys (sys is another important module )
 
 
-step 8 - to run salt module on minion locally or without master 
+step 8 - to run salt module on minion locally or without master
 
 salt-call test.ping
 
-
-
-Minion can be configured for failover master configuration or load balancing (Response of minion depends on the order in which master name or ip is mentioned)
+###Minion can be configured for failover master configuration or load balancing (Response of minion depends on the order in which master name or ip is mentioned)
 
 9. To list the functione present inside any module use below command
+
 salt --verbose '*' cmd list
+
 salt '*' cmd.run_all "echo hello how are you ? This is your master calling you, respond immediately"
 
 salt --out=json '*' cmd.run_all "echo hello how are you ? This is your master calling you, respond immediately"
 
 
-11. to list all the salt minion connected to the salt master 
+11. to list all the salt minion connected to the salt master
 
 salt-run manage.status
 salt-run manage.up
@@ -63,7 +62,7 @@ salt-run manage.down
 
 sudo salt -E '^my$' test.ping
 
-13 - Salt grains 
+13 - Salt grains
 Grains represent static data describing a minion. For example, minions have a grain named os_family, which describes the family of operating systems to which a
 minion belongs.
 
